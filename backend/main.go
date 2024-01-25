@@ -19,6 +19,8 @@ type Item struct {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/data", GetData).Methods("GET")
+	router.HandleFunc("/api/data", CreateData).Methods("POST")
+	router.HandleFunc("/api/data/{id}", DeleteData).Methods("DELETE")
 
 	corsHandler := cors.Default().Handler(router)
 
@@ -54,4 +56,38 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(responseJSON)
+}
+
+func CreateData(w http.ResponseWriter, r *http.Request) {
+	var newItem Item
+	err := json.NewDecoder(r.Body).Decode(&newItem)
+	if err != nil {
+		http.Error(w, "Error decoding request body", http.StatusBadRequest)
+		return
+	}
+
+	_, err = Db.Exec("INSERT INTO data (name) VALUES (?)", newItem.Name)
+	if err != nil {
+		http.Error(w, "Error inserting data into the database", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
+
+func DeleteData(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	itemID, ok := vars["id"]
+	if !ok {
+		http.Error(w, "Missing item ID", http.StatusBadRequest)
+		return
+	}
+
+	_, err := Db.Exec("DELETE FROM data WHERE id = ?", itemID)
+	if err != nil {
+		http.Error(w, "Error deleting data from the database", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }

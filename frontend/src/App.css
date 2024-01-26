@@ -9,7 +9,7 @@ body {
 
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto; /* Añadido margen en la parte superior e inferior para centrar */
   padding: 20px;
   background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -38,36 +38,36 @@ li {
 }
 
 input {
+  flex-grow: 1; /* Asegura que el input crezca para llenar el espacio disponible */
   padding: 10px;
   margin-right: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-button {
+button, .x {
   padding: 10px 15px;
-  background-color: #66cdaa; /* Verde pastel */
-  color: #fff;
+  margin-top: 10px; /* Añadido espacio entre el input y los botones */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+  transition: background-color 0.3s ease;
+}
+
+button {
+  background-color: #66cdaa;
+  color: #fff;
 }
 
 button:hover {
-  background-color: #4caf50; /* Verde más oscuro al pasar el ratón */
+  background-color: #4caf50;
 }
 
-.x{
-  padding: 10px 15px;
-  background-color: #cd6666; /* Verde pastel */
+.x {
+  background-color: #cd6666;
   color: #d5bbbb;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
 }
 
 .x:hover {
-  background-color: #31100f; 
+  background-color: #31100f;
 }

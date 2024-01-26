@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -85,6 +86,12 @@ func DeleteData(w http.ResponseWriter, r *http.Request) {
 
 	_, err := Db.Exec("DELETE FROM data WHERE id = ?", itemID)
 	if err != nil {
+		// Verifica si el error es debido a que el elemento no existe
+		if strings.Contains(err.Error(), "no rows in result set") {
+			http.Error(w, "Item not found", http.StatusNotFound)
+			return
+		}
+
 		http.Error(w, "Error deleting data from the database", http.StatusInternalServerError)
 		return
 	}

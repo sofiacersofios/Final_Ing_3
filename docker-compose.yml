@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  backend:
+    image: backend-image
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql-container
+
+  mysql-container:
+    image: mysql-image
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - mynetwork
+
+  frontend:
+    image: frontend-image
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
+
+networks:
+  mynetwork:
+    driver: bridge

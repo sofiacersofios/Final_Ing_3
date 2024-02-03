@@ -67,13 +67,32 @@ func CreateData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = Db.Exec("INSERT INTO data (name) VALUES (?)", newItem.Name)
+	result, err := Db.Exec("INSERT INTO data (name) VALUES (?)", newItem.Name)
 	if err != nil {
 		http.Error(w, "Error inserting data into the database", http.StatusInternalServerError)
 		return
 	}
 
+	// Obtener el ID del elemento recién insertado
+	createdID, err := result.LastInsertId()
+	if err != nil {
+		http.Error(w, "Error getting last insert ID", http.StatusInternalServerError)
+		return
+	}
+
+	// Crear la respuesta con el ID
+	response := map[string]int{"id": int(createdID)}
+
+	// Convertir a JSON y enviar la respuesta
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Error converting response to JSON", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	w.Write(jsonResponse)
 }
 
 func DeleteData(w http.ResponseWriter, r *http.Request) {

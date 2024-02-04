@@ -1,4 +1,4 @@
-name: Build Applicationn
+name: Build and Test Applicationn
 
 on:
   push:
@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and run 
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: Run Go tests
+        run: go test ./backend/...
+
+      - name: Build and run
         run: |
-           docker compose up -d
+          docker-compose up -d

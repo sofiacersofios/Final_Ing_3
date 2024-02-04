@@ -19,7 +19,7 @@ jobs:
           go-version: 1.17
 
       - name: Run Go tests
-        run: go test ./backend/...
+        run: go test ./...
 
       - name: Build and run
         run: |

@@ -2,6 +2,7 @@ version: '3'
 
 services:
   backend:
+    build: ./backend
     image: backend-image
     ports:
       - "8080:8080"
@@ -11,6 +12,7 @@ services:
       - mysql-container
 
   mysql-container:
+    build: ./db
     image: mysql-image
     ports:
       - "3307:3306"
@@ -20,6 +22,7 @@ services:
       - mynetwork
 
   frontend:
+    build: ./frontend
     image: frontend-image
     ports:
       - "3000:3000"

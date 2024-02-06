@@ -18,6 +18,7 @@ type Item struct {
 }
 
 func main() {
+	InitDB("root:root@tcp(172.23.0.2:3306)/mydatabase")
 	router := mux.NewRouter()
 	router.HandleFunc("/api/data", GetData).Methods("GET")
 	router.HandleFunc("/api/data", CreateData).Methods("POST")

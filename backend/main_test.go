@@ -20,8 +20,6 @@ func TestGetData(t *testing.T) {
 	}
 	defer db.Close()
 
-	InitDB("root:root@tcp(localhost:3306)/mydatabase")
-
 	Db = db
 
 	rows := sqlmock.NewRows([]string{"id", "name"}).AddRow(1, "example") // Ajusta según los datos de prueba
@@ -61,8 +59,6 @@ func TestCreateData(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer db.Close()
-
-	InitDB("root:root@tcp(localhost:3306)/mydatabase")
 
 	Db = db
 

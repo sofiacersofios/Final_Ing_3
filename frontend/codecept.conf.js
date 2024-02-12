@@ -20,7 +20,7 @@ exports.config = {
   bootstrap: null,
   teardown: null,
   mocha: {},
-  name: 'project-name',
+  name: 'frontend',
   plugins: {
     screenshotOnFail: {
       enabled: true,

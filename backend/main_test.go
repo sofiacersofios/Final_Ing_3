@@ -104,81 +104,43 @@ func TestCreateData(t *testing.T) {
 }
 
 /*
-
 func TestDeleteData(t *testing.T) {
 	log.Println("Running TestDeleteData")
-
-	// Configuración de la base de datos de prueba
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer db.Close()
 
-	// Configura la variable global Db con la base de datos de prueba
 	Db = db
 
-	// Configura la expectativa para la consulta DELETE cuando el elemento no existe
-	mock.ExpectExec("DELETE FROM data WHERE id = ?").
-		WithArgs(1).
-		WillReturnResult(sqlmock.NewResult(0, 0))
+	// Ajusta según los datos de prueba
+	itemID := "1"
 
-	// Realiza la solicitud para borrar el elemento con ID conocido (1)
-	reqDelete, err := http.NewRequest("DELETE", "/api/data/1", nil)
+	// Expectativa de la consulta DELETE
+	mock.ExpectExec("DELETE FROM data WHERE id = ?").WithArgs(itemID).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/api/data/%s", itemID), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rrDelete := httptest.NewRecorder()
-	handlerDelete := http.HandlerFunc(DeleteData)
-	handlerDelete.ServeHTTP(rrDelete, reqDelete)
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(DeleteData)
 
-	// Verifica el código de estado de la respuesta HTTP para el caso de elemento no encontrado
-	if status := rrDelete.Code; status != http.StatusNotFound {
-		t.Errorf("Handler for deleting data should return http.StatusNotFound for missing item: got %v want %v",
-			status, http.StatusNotFound)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
 	}
 
-	// Verifica el cuerpo de la respuesta HTTP para el caso de elemento no encontrado
-	expectedBodyNotFound := "Item not found"
-	if bodyNotFound := strings.TrimSpace(rrDelete.Body.String()); bodyNotFound != expectedBodyNotFound {
-		t.Errorf("Handler for deleting data should not return a body, but got %v", bodyNotFound)
-	}
+	log.Printf("Status Code: %d", rr.Code)
+	log.Printf("Response Body: %s", rr.Body.String())
 
-	// Verifica que se cumplan todas las expectativas de sqlmock
+	// Verificar que se llamó a la consulta DELETE con el ID esperado
 	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("SQL expectations were not met: %v", err)
-	}
-
-	// Reinicia las expectativas de sqlmock para el caso en que el elemento existe
-	mock.ExpectExec("DELETE FROM data WHERE id = ?").
-		WithArgs(1).
-		WillReturnResult(sqlmock.NewResult(0, 1))
-
-	// Realiza la solicitud para borrar el elemento con ID conocido (1)
-	reqDeleteExisting, err := http.NewRequest("DELETE", "/api/data/1", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rrDeleteExisting := httptest.NewRecorder()
-	handlerDeleteExisting := http.HandlerFunc(DeleteData)
-	handlerDeleteExisting.ServeHTTP(rrDeleteExisting, reqDeleteExisting)
-
-	// Verifica el código de estado de la respuesta HTTP para el caso de elemento existente
-	if statusExisting := rrDeleteExisting.Code; statusExisting != http.StatusOK {
-		t.Errorf("Handler for deleting data returned wrong status code: got %v want %v",
-			statusExisting, http.StatusOK)
-	}
-
-	// Verifica que no haya cuerpo de respuesta para el caso de elemento existente
-	if bodyExisting := strings.TrimSpace(rrDeleteExisting.Body.String()); bodyExisting != "" {
-		t.Errorf("Handler for deleting data should not return a body, but got %v", bodyExisting)
-	}
-
-	// Verifica que se cumplan todas las expectativas de sqlmock para el caso de elemento existente
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("SQL expectations were not met: %v", err)
+		t.Errorf("Expectations not met: %s", err)
 	}
 }
 */

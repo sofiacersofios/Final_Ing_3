@@ -53,3 +53,52 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  deploy:
+    needs: publish-docker-image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Heroku Container Registry
+        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login -u=_ --password-stdin registry.heroku.com
+
+      - name: Configure Heroku CLI
+        run: |
+          echo -e "machine api.heroku.com\n  login $HEROKU_EMAIL\n  password $HEROKU_API_KEY\nmachine git.heroku.com\n  login $HEROKU_EMAIL\n  password $HEROKU_API_KEY" > ~/.netrc
+      
+      - name: Build and push BACKEND
+        working-directory: ./backend 
+        run: |
+          docker build -t backend .
+          docker tag backend registry.heroku.com/backend-ing3/web
+          docker push registry.heroku.com/backend-ing3/web
+
+      - name: Release to Heroku BACKEND
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web -a backend-ing3
+        
+      - name: Activate Deployment on Heroku BACKEND
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku ps:scale web=1 -a backend-ing3
+
+      - name: Build and push FRONTEND
+        working-directory: ./frontend
+        run: |
+          docker build -t frontend .
+          docker tag frontend registry.heroku.com/frontend-ing3/web
+          docker push registry.heroku.com/frontend-ing3/web
+
+      - name: Release to Heroku FRONTEND
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web -a frontend-ing3
+        
+      - name: Activate Deployment on Heroku FRONTEND
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku ps:scale web=1 -a frontend-ing3

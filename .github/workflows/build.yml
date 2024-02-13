@@ -69,10 +69,22 @@ jobs:
         run: |
           echo -e "machine api.heroku.com\n  login $HEROKU_EMAIL\n  password $HEROKU_API_KEY\nmachine git.heroku.com\n  login $HEROKU_EMAIL\n  password $HEROKU_API_KEY" > ~/.netrc
       
+      - name: Build and push BACKEND
+        working-directory: ./backend 
+        run: |
+          docker build -t backend .
+          docker tag backend registry.heroku.com/backend-ing3/web
+          docker push registry.heroku.com/backend-ing3/web
+
       - name: Release to Heroku BACKEND
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: docker pull sofiacersofios/final_ing_3_backend_1 && docker tag sofiacersofios/final_ing_3_backend_1 registry.heroku.com/backend-ing3/web && heroku container:release web -a backend-ing3 && heroku ps:scale web=1 -a backend-ing3
+        run: heroku container:release web -a backend-ing3
+        
+      - name: Activate Deployment on Heroku BACKEND
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku ps:scale web=1 -a backend-ing3
 
       - name: Build and push FRONTEND
         working-directory: ./frontend

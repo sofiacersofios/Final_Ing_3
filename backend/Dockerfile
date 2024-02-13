@@ -10,8 +10,5 @@ COPY . .
 # Download and install any required third-party dependencies into the container
 RUN go mod download
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
-
 # Command to run the executable
 CMD ["go", "run", "main.go", "db.go"]

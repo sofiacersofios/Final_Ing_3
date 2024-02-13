@@ -11,7 +11,7 @@ function App() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/data');
+            const response = await fetch('https://backend-ing3-c702d32ea71d.herokuapp.com/api/data');
             if (!response.ok) {
                 console.error('Failed to fetch data:', response.statusText);
                 return;
@@ -30,7 +30,7 @@ function App() {
 
     const handleAddItem = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/data', {
+            const response = await fetch('https://backend-ing3-c702d32ea71d.herokuapp.com/api/data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function App() {
 
     const handleDeleteItem = async (itemId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/data/${itemId}`, {
+            const response = await fetch(`https://backend-ing3-c702d32ea71d.herokuapp.com/api/data/${itemId}`, {
                 method: 'DELETE',
             });
 

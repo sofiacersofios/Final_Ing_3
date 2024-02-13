@@ -5,16 +5,27 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
+var PORT = getPort()
+
 // Item es una estructura para representar los datos
 type Item struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
+}
+
+func getPort() string {
+	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		PORT = "8080" // Puerto predeterminado si no se especifica
+	}
+	return PORT
 }
 
 func main() {
@@ -26,8 +37,8 @@ func main() {
 
 	corsHandler := cors.Default().Handler(router)
 
-	fmt.Println("Server is running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", corsHandler))
+	fmt.Printf("Server is running on :%s\n", PORT)
+	log.Fatal(http.ListenAndServe(":"+PORT, corsHandler))
 }
 
 func GetData(w http.ResponseWriter, r *http.Request) {

@@ -18,7 +18,7 @@ type Item struct {
 }
 
 func main() {
-	InitDB("root:root@tcp(final_ing_3_mysql-container_1:3306)/mydatabase")
+	InitDB("pt3fa2lcauunqxg2:ljcwfl6ohmk67oze@tcp(zf4nk2bcqjvif4in.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306)/y408k4efstljwx49")
 	router := mux.NewRouter()
 	router.HandleFunc("/api/data", GetData).Methods("GET")
 	router.HandleFunc("/api/data", CreateData).Methods("POST")

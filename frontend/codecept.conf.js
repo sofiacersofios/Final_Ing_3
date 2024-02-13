@@ -3,7 +3,7 @@ exports.config = {
   output: './output',
   helpers: {
     Puppeteer: {
-      url: 'https://frontend-ing3-911258dbebe8.herokuapp.com/',
+      url: 'https://frontend-ing3-911258dbebe8.herokuapp.com',
       show: true,
       windowSize: '1200x900',
       chrome: {

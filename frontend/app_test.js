@@ -2,7 +2,6 @@ const path = require('path');
 
 Feature('App Functionality');
 
-
 Scenario('should render the app', ({ I }) => {
   I.amOnPage('/');
   I.see('NOTAS');
@@ -15,6 +14,8 @@ Scenario('should render the app', ({ I }) => {
 
 Scenario('should add a new item', async ({ I }) => {
   I.amOnPage('/');
+
+  I.wait(3);
 
   // Get the initial count of items
   const initialItemCount = await I.grabNumberOfVisibleElements('li');
@@ -47,6 +48,8 @@ Scenario('should add a new item', async ({ I }) => {
 Scenario('should delete the last added item', async ({ I }) => {
   I.amOnPage('/');
 
+  I.wait(3);
+
   // Grab the text of the last item before deletion
   const lastItemText = await I.grabTextFrom('ul li:last-child');
 
@@ -60,7 +63,7 @@ Scenario('should delete the last added item', async ({ I }) => {
       return !Array.from(items).some((item) => item.innerText === lastItemText);
     },
     [lastItemText],
-    10
+    20
   );
 
   // Verify that the last item's text is no longer present

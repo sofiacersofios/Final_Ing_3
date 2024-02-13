@@ -1,4 +1,4 @@
-name: Build and Test App
+name: Build, Test and Deploy App
 
 on:
   push:
@@ -102,3 +102,22 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku ps:scale web=1 -a frontend-ing3
+
+  integration-test:
+    needs: deploy
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+  
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+  
+      - name: Install Dependencies and CodeceptJS
+        working-directory: frontend
+        run: |
+          npm install
+          npx codeceptjs run

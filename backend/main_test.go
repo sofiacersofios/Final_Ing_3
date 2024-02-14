@@ -69,7 +69,7 @@ func TestCreateData(t *testing.T) {
 	}
 
 	// Expect INSERT query and return a result with ID 1
-	mock.ExpectExec("INSERT INTO data").WithArgs(newItem.Name).WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectExec("INSERT INTO data").WithArgs(newItem.Name).WillReturnResult(sqlmock.NewResult(1, 1)) //aca se pone el id
 
 	req, err := http.NewRequest("POST", "/api/data", bytes.NewBuffer(jsonData))
 	if err != nil {

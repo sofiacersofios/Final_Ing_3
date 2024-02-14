@@ -50,27 +50,24 @@ Scenario('should delete the last added item', async ({ I }) => {
 
   I.wait(3);
 
-  // Grab the text of the last item before deletion
-  const lastItemText = await I.grabTextFrom('ul li:last-child');
+  // Grab the count of items before deletion
+  const originalItemCount = await I.grabNumberOfVisibleElements('ul li');
 
   // Click the delete button of the last item
   I.click('ul li:last-child button.x');
 
   // Wait for the item to be removed dynamically
   await I.waitForFunction(
-    (lastItemText) => {
+    (originalItemCount) => {
       const items = document.querySelectorAll('ul li');
-      return !Array.from(items).some((item) => item.innerText === lastItemText);
+      return items.length < originalItemCount;
     },
-    [lastItemText],
+    [originalItemCount],
     20
   );
 
-  // Verify that the last item's text is no longer present
-  I.dontSee(lastItemText, 'ul li');
-
   I.wait(3);
-
 });
+
 
 

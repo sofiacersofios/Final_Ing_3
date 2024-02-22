@@ -2,7 +2,7 @@ const path = require('path');
 
 Feature('App Functionality');
 
-Scenario('should render the app', ({ I }) => {
+Scenario('should render the app ...', ({ I }) => {
   I.amOnPage('/');
   I.see('NOTAS');
   I.seeElement('ul');

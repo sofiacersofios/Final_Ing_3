@@ -12,6 +12,22 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Update npm
+      run: npm install -g npm@10.4.0
+
+    - name: Set Puppeteer environment variable
+      run: echo "PUPPETEER_SKIP_DOWNLOAD=true" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: |
+        npm install \
+          @babel/plugin-transform-numeric-separator \
+          @babel/plugin-transform-private-methods \
+          @babel/plugin-transform-nullish-coalescing-operator \
+          @babel/plugin-transform-class-properties \
+          rollup/plugin-terser \
+          uuid@latest
+
     - name: Build and run 
       run: docker-compose up -d
 

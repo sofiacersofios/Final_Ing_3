@@ -44,6 +44,6 @@
     "devDependencies": {
         "@types/node": "^20.11.16",
         "codeceptjs": "^3.5.12",
-        "puppeteer": "^22.0.0"
+        "puppeteer": "^5.5.0"
     }
 }

@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy the local package files to the container's workspace
 COPY . .
 
+ENV PUPPETEER_SKIP_DOWNLOAD true
+
 # Install dependencies
 RUN npm install
 

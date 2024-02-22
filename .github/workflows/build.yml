@@ -125,4 +125,4 @@ jobs:
   
       - name: Run Integration Tests with xvfb-run
         working-directory: frontend
-        run: xvfb-run -a npx codeceptjs run --steps
+        run: xvfb-run -a npx codeceptjs run --steps -d

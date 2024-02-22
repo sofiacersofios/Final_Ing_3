@@ -22,7 +22,7 @@ func TestGetData(t *testing.T) {
 
 	Db = db
 
-	rows := sqlmock.NewRows([]string{"id", "name"}).AddRow(1, "example2") // Ajusta según los datos de prueba
+	rows := sqlmock.NewRows([]string{"id", "name"}).AddRow(1, "example") // Ajusta según los datos de prueba
 	mock.ExpectQuery("SELECT id, name FROM data").WillReturnRows(rows)
 
 	req, err := http.NewRequest("GET", "/api/data", nil)
